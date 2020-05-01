@@ -18,10 +18,25 @@
     </form> 
 
     <script>
+
+        const renderMessage = (message) => {
+            $('.messages').append('<div class="message"> <strong>'+ message.author +'</strong>: '+ message.message+'</div>');
+        };
+
         // Essa página possui o script do socket.io no header
         // Abaixo estamos configurando a conexão do cliente que abrir esa página com o socket presente 
         // no endereço abaixo.
         const socket = io('http://localhost:3000');
+
+        socket.on('receivedMessage', message => {
+            renderMessage(message);
+        });
+
+        socket.on('contentChat', contentArray => {
+            contentArray.map(data => {
+                renderMessage(data);
+            });
+        });
 
         // Configura evento de submissão de formulário
         $('#chat').submit(event => {
@@ -36,6 +51,8 @@
                     author,
                     message
                 }
+
+                renderMessage(messageObject);
                 // Envia os dados para o servidor através do socket
                 socket.emit('sendMessage', messageObject);
             }
