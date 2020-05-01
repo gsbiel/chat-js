@@ -15,4 +15,9 @@ app.use('/', (req, res) => {
     res.render('index.html');
 });
 
+// Configura conexão dos clientes através do socket
+io.on('connection', socket => {
+    console.log(`Socket conectado: ${socket.id}`);
+});
+
 server.listen(3000);
