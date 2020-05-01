@@ -21,7 +21,26 @@
         // Essa página possui o script do socket.io no header
         // Abaixo estamos configurando a conexão do cliente que abrir esa página com o socket presente 
         // no endereço abaixo.
-        var socket = io('http://localhost:3000');
+        const socket = io('http://localhost:3000');
+
+        // Configura evento de submissão de formulário
+        $('#chat').submit(event => {
+            event.preventDefault();
+
+            const author = $('input[name=username').val();
+            const message = $('input[name=message').val();
+
+            if(author.length && message.length){
+                // Prepara dados para transmissão
+                var messageObject = {
+                    author,
+                    message
+                }
+                // Envia os dados para o servidor através do socket
+                socket.emit('sendMessage', messageObject);
+            }
+        });
+
     </script>
 </body>
 </html>

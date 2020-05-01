@@ -15,9 +15,16 @@ app.use('/', (req, res) => {
     res.render('index.html');
 });
 
+
+let messages = [];
+
 // Configura conexão dos clientes através do socket
 io.on('connection', socket => {
     console.log(`Socket conectado: ${socket.id}`);
+    socket.on('sendMessage', data => {
+        console.log(data);
+        messages.push(data);
+    });
 });
 
 server.listen(3000);
